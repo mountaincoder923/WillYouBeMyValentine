@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Will you be my valentine???</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            background: #ffe6f2; /* Light pinkish background */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+            position: relative;
+        }
+
+        .bubble {
+            color: rgba(212, 139, 248, 0.94);
+            font-family: monospace;
+            text-align: center;
+            padding: 20px;
+            font-size: 70px;
+            font-weight: bold;
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .face {
+            color: white;
+            font-family: monospace;
+            text-align: center;
+            padding: 20px;
+            font-size: 120px;
+            font-weight: bold;
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .yes_box {
+            color: #e09cff;
+            background-color: #cef0ff;
+            padding: 100px 125px;
+            border-radius: 10px;
+            font-size: 40px;
+            text-align: center;
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100; /* Always in front */
+        }
+
+        .yes_box.active {
+            visibility: visible;
+            animation: popup 1.5s forwards;
+        }
+
+        @keyframes popup {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .button-container {
+            gap: 20px;
+        }
+
+        .yes_button {
+            color: white;
+            background-color: green;
+            padding: 28px 56px;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            margin: 70px;
+        }
+
+        .no_button {
+            color: white;
+            background-color: red;
+            padding: 28px 56px;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            margin: 70px;
+        }
+
+        /* Hearts container and styles */
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .heart {
+            --heart-size: 40px;
+            position: absolute;
+            top: -60px;
+            width: var(--heart-size);
+            height: var(--heart-size);
+            background: hotpink;
+            transform: rotate(-45deg);
+            pointer-events: none;
+            animation: fall linear forwards;
+            will-change: transform, opacity;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            width: var(--heart-size);
+            height: var(--heart-size);
+            background: hotpink;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -50%;
+            left: 0;
+        }
+
+        .heart::after {
+            left: 50%;
+            top: 0;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(-45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(-45deg) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Celebration container and styles */
+        .celebration-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        .celebration {
+            position: absolute;
+            top: -50px;
+            pointer-events: none;
+            will-change: transform, opacity;
+            animation: fall-celebration linear forwards;
+        }
+
+        @keyframes fall-celebration {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Styling for the h1 inside yes_box */
+        #yes_box h1 {
+            font-size: 3rem; /* Base size for roses */
+        }
+
+        .big_bear {
+            font-size: 6rem; /* Makes only the bear bigger */
+            display: inline-block;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+<div class="bubble">Will you be my Valentine???</div>
+<div class="face">😊</div>
+<div class="hearts-container" id="hearts-container"></div>
+<div class="celebration-container" id="celebration-container"></div>
+
+<div class="yes_box" id="yes_box">
+    <h2>YAY!</h2>
+    <br><br>
+    I'm so happy!
+    <br><br>
+    <h1>🌹<span class="big_bear">🧸</span>🌹</h1>
+    <br><br>
+    xoxoxo
+</div>
+
+<div class="button-container">
+    <button id="yes_button" class="yes_button">Yes</button>
+    <button id="no_button" class="no_button">No</button>
+</div>
+
+<script>
+    const heartsContainer = document.getElementById('hearts-container');
+    const celebrationContainer = document.getElementById('celebration-container');
+    const yesBox = document.getElementById('yes_box');
+    const yesButton = document.getElementById('yes_button');
+    const noButton = document.getElementById('no_button');
+    const NO_BUTTON_SIZES = ["14px 28px", "7px 14px"];
+    const YES_BUTTON_SIZES = ["56px 102px", "102px 204px"];
+    const FACES = ["😟","😔","😭"];
+    let noCount = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+
+    // Event Listeners
+    window.onload = () => {
+        initHearts(50);
+    };
+
+    document.addEventListener("mousemove", (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+    });
+
+    noButton.addEventListener('click', () => {
+        handleNoClick();
+    });
+
+    yesButton.addEventListener('click', () => {
+        yesBox.classList.add('active');
+        document.querySelector('.button-container').style.display = 'none';
+        document.querySelector('.bubble').style.display = 'none';
+        document.querySelector('.face').style.display = 'none';
+        initHearts(50);
+        initCelebration(50);
+    });
+
+    function handleNoClick() {
+        if (noCount < 2) {
+            noButton.style.setProperty("padding", NO_BUTTON_SIZES[noCount]);
+            noButton.style.setProperty("font-size", `calc(25px - ${noCount} * 10px)`);
+            yesButton.style.setProperty("padding", YES_BUTTON_SIZES[noCount]);
+            yesButton.style.setProperty("font-size", `calc(75px + ${noCount} * 10px)`);
+            document.querySelector('.face').textContent =  FACES[noCount];
+            noCount++;
+        } else {
+            document.querySelector('.face').textContent =  FACES[noCount];
+            moveNoButton(300, 400);
+            flashYesButton();
+            runNoButton();
+        }
+    }
+
+    // Functions
+    function createHeart() {
+        const heartElement = document.createElement('div');
+        heartElement.classList.add('heart');
+        heartElement.style.left = Math.random() * 100 + 'vw';
+        const fallDuration = 5 + Math.random() * 5;
+        const fallDelay = Math.random() * 5;
+        heartElement.style.animationDuration = fallDuration + 's';
+        heartElement.style.animationDelay = fallDelay + 's';
+        const size = 20 + Math.random() * 20;
+        heartElement.style.setProperty('--heart-size', size + 'px');
+        const extraRotation = -30 + Math.random() * 60;
+        heartElement.style.transform = `rotate(-45deg) rotate(${extraRotation}deg)`;
+        heartElement.addEventListener('animationend', () => {
+            heartElement.remove();
+        });
+        heartsContainer.appendChild(heartElement);
+    }
+
+    function initHearts(count) {
+        for (let i = 0; i < count; i++) {
+            createHeart();
+        }
+        setInterval(createHeart, 1000);
+    }
+
+    function createCelebration() {
+        const celebrationElement = document.createElement('div');
+        celebrationElement.classList.add('celebration');
+        const randomNumber = Math.floor(Math.random() * 2) + 1;
+        celebrationElement.textContent = randomNumber === 1 ? "🌹" : "🎉";
+        celebrationElement.style.left = Math.random() * 100 + 'vw';
+        const fallDuration = 5 + Math.random() * 5;
+        const fallDelay = Math.random() * 5;
+        celebrationElement.style.animationDuration = fallDuration + 's';
+        celebrationElement.style.animationDelay = fallDelay + 's';
+        const size = 30 + Math.random() * 20;
+        celebrationElement.style.fontSize = size + 'px';
+        celebrationElement.addEventListener('animationend', () => {
+            celebrationElement.remove();
+        });
+        celebrationContainer.appendChild(celebrationElement);
+    }
+
+    function initCelebration(count) {
+        for (let i = 0; i < count; i++) {
+            createCelebration();
+        }
+        setInterval(createCelebration, 1000);
+    }
+
+    function moveNoButton(newLeft, newTop) {
+        noButton.style.position = "absolute";
+        noButton.style.margin = "0";
+        noButton.style.left = newLeft + "px";
+        noButton.style.top = newTop + "px";
+    }
+
+    function flashYesButton() {
+        let toggle = false;
+        setInterval(() => {
+            toggle = !toggle;
+            yesButton.style.setProperty("color", toggle ? "yellow" : "white");
+        }, 325);
+    }
+
+    function runNoButton() {
+        const getNumericStyle = (element, property) => parseFloat(element.style[property]) || 0;
+        const runSpeed = 10;         // Speed of running away
+        const fearDistance = 120;      // Distance to trigger running
+        const cornerThreshold = 10;    // If near edge, teleport
+
+        setInterval(() => {
+            let buttonX = getNumericStyle(noButton, "left");
+            let buttonY = getNumericStyle(noButton, "top");
+
+            // Distance from mouse
+            const dx = buttonX - mouseX;
+            const dy = buttonY - mouseY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Boundaries
+            const maxX = window.innerWidth - noButton.offsetWidth;
+            const maxY = window.innerHeight - noButton.offsetHeight;
+
+            if (
+                buttonX < cornerThreshold ||
+                buttonX > maxX - cornerThreshold ||
+                buttonY < cornerThreshold ||
+                buttonY > maxY - cornerThreshold
+            ) {
+                const newX = Math.random() * (maxX - 60) + 30;
+                const newY = Math.random() * (maxY - 60) + 30;
+                noButton.style.left = newX + "px";
+                noButton.style.top = newY + "px";
+                return;
+            }
+
+            if (distance < fearDistance) {
+                const angle = Math.atan2(dy, dx);
+                let newX = buttonX + runSpeed * Math.cos(angle);
+                let newY = buttonY + runSpeed * Math.sin(angle);
+
+                newX = Math.min(Math.max(newX, 0), maxX);
+                newY = Math.min(Math.max(newY, 0), maxY);
+
+                noButton.style.left = newX + "px";
+                noButton.style.top = newY + "px";
+            }
+        }, 15); // ~60 FPS
+    }
+</script>
+</body>
+</html>
