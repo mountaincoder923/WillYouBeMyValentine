@@ -20,8 +20,8 @@ Includes **animated hearts**, **emoji reactions**, and a **celebratory animation
 
 ## 📂 Project Structure
 
-index.html Contains the HTML / CSS to redner the GitHub pages site.
-script.js Contains the logic that powers index.html / GitHub pages site.
+index.html Contains the HTML / CSS to redner the GitHub pages site.  
+script.js Contains the logic that powers index.html / GitHub pages site.  
 WillYouBeMyValentine.html is the complete, self contained file that you can download and send to your special someone!
 
 
