@@ -1,9 +1,16 @@
+<!-- ******************************************************
+     * Complete File, Ready to  send! *
+     * Comments show spots to change for custom messages *
+     * Graphics can be reduced for less powerful devices *
+     ************************************************** -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <title>Will you be my valentine???</title>
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -204,10 +211,11 @@
         }
 
         .big_bear {
-            font-size: 6rem; /* Makes only the bear bigger */
+            font-size: 6rem;
             display: inline-block;
             line-height: 1;
         }
+        /* Adjust divs below for custom messages.*/
     </style>
 </head>
 <body>
@@ -246,6 +254,7 @@
 
     // Event Listeners
     window.onload = () => {
+        // Change parameter to reduce / increase hearts.
         initHearts(50);
     };
 
@@ -263,6 +272,7 @@
         document.querySelector('.button-container').style.display = 'none';
         document.querySelector('.bubble').style.display = 'none';
         document.querySelector('.face').style.display = 'none';
+        // Change init parameter to reduce / increase graphics.
         initHearts(50);
         initCelebration(50);
     });
@@ -350,6 +360,7 @@
     }
 
     function runNoButton() {
+        // Adjust these thresholds to customize movement behavior.
         const getNumericStyle = (element, property) => parseFloat(element.style[property]) || 0;
         const runSpeed = 10;         // Speed of running away
         const fearDistance = 120;      // Distance to trigger running
