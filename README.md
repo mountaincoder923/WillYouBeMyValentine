@@ -18,13 +18,22 @@ Includes **animated hearts**, **emoji reactions**, and a **celebratory animation
 
 ---
 
+## 📂 Project Structure
+
+index.html Contains the HTML / CSS to redner the GitHub pages site.
+script.js Contains the logic that powers index.html / GitHub pages site.
+WillYouBeMyValentine.html is the complete, self contained file that you can download and send to your special someone!
+
+
+---
+
 ## 🚀 Try It Out
 
 [🌐 **Live Demo on GitHub Pages**](https://mountaincoder923.github.io/WillYouBeMyValentine/)
 
-Or, clone the repo and send it your special someone to open `index.html` in their browser!
+Or, clone the repo and send it your special someone to open `WillYouBeMyValentine.html` in their browser!
 
 ```bash
 git clone https://github.com/mountaincoder923/WillYouBeMyValentine.git
 cd WillYouBeMyValentine
-open index.html  # Or double-click to open in your browser
+open WillYouBeMyValentine.html  # Or double-click to open in your browser
